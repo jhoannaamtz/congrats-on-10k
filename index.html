@@ -81,32 +81,6 @@ const cakeGeometry = new THREE.CylinderGeometry(cakeRadius, cakeRadius, cakeHeig
 const cakeMesh = new THREE.Mesh(cakeGeometry, blueMaterial);
 cakeMesh.position.y = cakeHeight/2;
 scene.add(cakeMesh);
-
-/* ICING DRIPS on the cake edge */
-const dripGroup = new THREE.Group();
-scene.add(dripGroup);
-
-const dripCount = 40;
-for (let i = 0; i < dripCount; i++) {
-
-    const angle = (i / dripCount) * Math.PI * 2;
-    const x = Math.cos(angle) * cakeRadius * 0.97;
-    const z = Math.sin(angle) * cakeRadius * 0.97;
-
-    const dripHeight = Math.random() * 0.7 + 0.4;
-
-    const geo = new THREE.CapsuleGeometry(0.25, dripHeight, 4, 8);
-    const mat = new THREE.MeshStandardMaterial({
-        color: 0xFFD700,
-        roughness: 0.6,
-        metalness: 0
-    });
-
-    const drip = new THREE.Mesh(geo, mat);
-    drip.position.set(x, cakeHeight - 0.2, z);
-    drip.rotation.x = Math.PI / 2; // orient downward
-    dripGroup.add(drip);
-}
  
 
 /* Gold piping BORDER frosting*/
