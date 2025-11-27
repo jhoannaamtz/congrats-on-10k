@@ -196,13 +196,7 @@ function animate() {
 
 animate();
 
-/*resize*/
-window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.fov = window.innerWidth < 600 ? 85 : 75;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
+ /* gif */
 <img src="https://media.tenor.com/j_MxsHf3fXIAAAAM/clash-royale-clash-mini.gif" 
      id="bottomGif" 
      style="
@@ -213,6 +207,21 @@ window.addEventListener("resize", () => {
          width: 150px;  /* adjust size */
          z-index: 10;
          pointer-events: none; /* allows clicking through */
+
+/* background */
+const loader = new THREE.TextureLoader();
+loader.load('https://support.supercell.com/images/_sidebarPortrait/CR-hamburger-for-portrait.jpg?v=1762334933', function(texture){
+    scene.background = texture;
+});
+    
+/*resize*/
+window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.fov = window.innerWidth < 600 ? 85 : 75;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+
      ">
 
 });
