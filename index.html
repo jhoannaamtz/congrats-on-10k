@@ -77,17 +77,13 @@ const goldMaterial = new THREE.MeshStandardMaterial({
 });
 
 /*ckae*/
-const towerHeight = 6;
-const blueRingHeight = 1;
-const goldTopHeight = 1.5;
+const towerHeight = 4;
 
 /*tow*/
 const towerGeometry = new THREE.CylinderGeometry(3.5, 3.5, towerHeight, 25);
 const towerMesh = new THREE.Mesh(towerGeometry, stoneMaterial);
 towerMesh.position.y = towerHeight / 2;
 scene.add(towerMesh);
-
-
 
 
 
