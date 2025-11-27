@@ -80,26 +80,25 @@ const cakeMesh = new THREE.Mesh(
 cakeMesh.position.y = cakeHeight / 2;
 scene.add(cakeMesh);
 
-function createShellGeometry(width = 0.55, height = 0.35, depth = 0.55, segments = 32) {
+function createShellGeometry() {
+    const group = new THREE.Group();
 
-    const shape = new THREE.Shape();
+    // Main mound (front rounded part)
+    const moundGeo = new THREE.SphereGeometry(0.32, 20, 20, 0, Math.PI);
+    const mound = new THREE.Mesh(moundGeo, goldMaterial);
+    mound.scale.set(1.35, 0.9, 1);
+    mound.position.set(0, 0, 0);
+    group.add(mound);
 
-    shape.moveTo(0, 0);
-    shape.quadraticCurveTo(width * 0.6, height, 0, height * 0.75);
-    shape.quadraticCurveTo(-width * 0.4, height * 0.45, 0, 0);
+    // Ridged “tail” behind the mound
+    const tailGeo = new THREE.CylinderGeometry(0.001, 0.25, 0.45, 8, 1);
+    const tail = new THREE.Mesh(tailGeo, goldMaterial);
+    tail.rotation.x = Math.PI / 2;
+    tail.position.set(0, 0, -0.32);
+    group.add(tail);
 
-    const extrudePath = new THREE.Curve();
-    extrudePath.getPoint = function (t) {
-        return new THREE.Vector3(0, 0, -t * depth);
-    };
-
-    return new THREE.ExtrudeGeometry(shape, {
-        steps: segments,
-        extrudePath,
-        bevelEnabled: false
-    });
+    return group;
 }
-
 
     
 /* Top Shell Border */
@@ -127,27 +126,23 @@ for (let i = 0; i < topCount; i++) {
 
 
 /* BOTTOM BORDER */
-const bottomShells = new THREE.Group();
-scene.add(bottomShells);
+const bottomBorder = new THREE.Group();
+scene.add(bottomBorder);
 
 const bottomCount = 40;
-
 for (let i = 0; i < bottomCount; i++) {
     const angle = (i / bottomCount) * Math.PI * 2;
-    const x = Math.cos(angle) * cakeRadius * 0.97;
-    const z = Math.sin(angle) * cakeRadius * 0.97;
+    const x = Math.cos(angle) * cakeRadius * 0.96;
+    const z = Math.sin(angle) * cakeRadius * 0.96;
 
-    const shellGeo = createShellGeometry(0.65, 0.45, 0.65);
-    const shell = new THREE.Mesh(shellGeo, goldMaterial);
+    const s = createShellGeometry();
+    s.scale.set(1.25, 1.25, 1.25); // slightly bigger for the base
+    s.position.set(x, 0.12, z);
+    s.lookAt(0, 0.12, 0);
 
-    shell.position.set(x, 0.12, z);
-
-    // Face outward like piped icing
-    shell.lookAt(0, 0.12, 0);
-    shell.rotateX(Math.PI / 2);
-
-    bottomShells.add(shell);
+    bottomBorder.add(s);
 }
+
 
 /* FLOATING TEXT */
 const fontLoader = new FontLoader();
