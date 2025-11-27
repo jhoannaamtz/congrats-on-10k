@@ -55,6 +55,24 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0, 8, 15);
 camera.lookAt(0, 4, 0);
 
+/* AUDIO SETUP */
+const listener = new THREE.AudioListener();
+camera.add(listener);
+
+const sound = new THREE.Audio(listener);
+
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load(
+    "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c3cba6d1e8.mp3?filename=game-music-loop-5-113701.mp3", 
+    buffer => {
+        sound.setBuffer(buffer);
+        sound.setLoop(true);
+        sound.setVolume(0.45);
+        sound.play();
+    }
+);
+
+    
 /* Renderer */
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
