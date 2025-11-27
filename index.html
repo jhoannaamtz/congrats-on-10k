@@ -90,7 +90,7 @@ for (let i = 0; i < borderCount; i++) {
     const x = Math.cos(angle) * cakeRadius * 0.95;
     const z = Math.sin(angle) * cakeRadius * 0.95;
 
-    const geo = new THREE.TorusKnotGeometry(0.22, 0.08, 64, 12, 2, 3);
+    const geo = new THREE.TorusKnotGeometry(0.32, 0.14, 64, 12, 2, 3);
     const mat = new THREE.MeshStandardMaterial({ color: 0xFFD700, metalness: 0.4, roughness: 0.3 });
 
     const blob = new THREE.Mesh(geo, mat);
