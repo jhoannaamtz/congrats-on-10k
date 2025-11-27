@@ -80,51 +80,51 @@ const cakeMesh = new THREE.Mesh(
 cakeMesh.position.y = cakeHeight / 2;
 scene.add(cakeMesh);
 
-function createRosette(radius = 0.28, height = 0.20, turns = 2.8, segments = 80) {
+function createShellGeometry(width = 0.55, height = 0.35, depth = 0.55, segments = 32) {
+
     const shape = new THREE.Shape();
-    const r = radius * 0.55;
 
-    // small round shape (like icing tip)
-    shape.absarc(0, 0, r, 0, Math.PI * 2);
+    shape.moveTo(0, 0);
+    shape.quadraticCurveTo(width * 0.6, height, 0, height * 0.75);
+    shape.quadraticCurveTo(-width * 0.4, height * 0.45, 0, 0);
 
-    const path = new THREE.Curve();
-    path.getPoint = function (t) {
-        const angle = t * Math.PI * 2 * turns;
-        return new THREE.Vector3(
-            Math.cos(angle) * radius * t,
-            height * t,
-            Math.sin(angle) * radius * t
-        );
+    const extrudePath = new THREE.Curve();
+    extrudePath.getPoint = function (t) {
+        return new THREE.Vector3(0, 0, -t * depth);
     };
 
     return new THREE.ExtrudeGeometry(shape, {
         steps: segments,
-        extrudePath: path,
+        extrudePath,
         bevelEnabled: false
     });
 }
 
+
     
-/* TOP BORDER */
+/* Top Shell Border */
+const topShells = new THREE.Group();
+scene.add(topShells);
 
-const topRosettes = new THREE.Group();
-scene.add(topRosettes);
-
-const topCount = 22;
+const topCount = 36;
 
 for (let i = 0; i < topCount; i++) {
     const angle = (i / topCount) * Math.PI * 2;
     const x = Math.cos(angle) * cakeRadius * 0.92;
     const z = Math.sin(angle) * cakeRadius * 0.92;
 
-    const rosetteGeo = createRosette(0.35, 0.18, 3.2);
-    const rosette = new THREE.Mesh(rosetteGeo, goldMaterial);
+    const shellGeo = createShellGeometry(0.55, 0.38, 0.55);
+    const shell = new THREE.Mesh(shellGeo, goldMaterial);
 
-    rosette.position.set(x, cakeHeight + 0.08, z);
-    rosette.lookAt(0, cakeHeight + 0.08, 0);
+    shell.position.set(x, cakeHeight + 0.02, z);
 
-    topRosettes.add(rosette);
+    // Make it face outward
+    shell.lookAt(0, cakeHeight + 0.02, 0);
+    shell.rotateX(Math.PI / 2);
+
+    topShells.add(shell);
 }
+
 
 /* BOTTOM BORDER */
 const bottomBorder = new THREE.Group();
