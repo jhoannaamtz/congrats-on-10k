@@ -202,6 +202,19 @@ window.addEventListener("resize", () => {
     camera.fov = window.innerWidth < 600 ? 85 : 75;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+
+<img src="https://media.tenor.com/j_MxsHf3fXIAAAAM/clash-royale-clash-mini.gif" 
+     id="bottomGif" 
+     style="
+         position: fixed;
+         bottom: 20px; 
+         left: 50%; 
+         transform: translateX(-50%);
+         width: 150px;  /* adjust size */
+         z-index: 10;
+         pointer-events: none; /* allows clicking through */
+     ">
+
 });
 </script>
 
