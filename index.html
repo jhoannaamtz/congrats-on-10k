@@ -10,7 +10,7 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            width: 350px;
+            width: 250px;
             z-index: 10;
             pointer-events: none;
         }
@@ -82,9 +82,7 @@ const cakeMesh = new THREE.Mesh(cakeGeometry, blueMaterial);
 cakeMesh.position.y = cakeHeight/2;
 scene.add(cakeMesh);
 
-/* ------------------------------
-   ICING DRIPS on the cake edge
------------------------------- */
+/* ICING DRIPS on the cake edge */
 const dripGroup = new THREE.Group();
 scene.add(dripGroup);
 
@@ -99,7 +97,7 @@ for (let i = 0; i < dripCount; i++) {
 
     const geo = new THREE.CapsuleGeometry(0.25, dripHeight, 4, 8);
     const mat = new THREE.MeshStandardMaterial({
-        color: 0x228BEE,
+        color: 0xFFD700,
         roughness: 0.6,
         metalness: 0
     });
@@ -111,10 +109,7 @@ for (let i = 0; i < dripCount; i++) {
 }
  
 
-/* Gold piping (thin torus on top) */
-/* -------------------------
-   PIPED BORDER frosting
--------------------------- */
+/* Gold piping BORDER frosting*/
 const borderGroup = new THREE.Group();
 scene.add(borderGroup);
 
