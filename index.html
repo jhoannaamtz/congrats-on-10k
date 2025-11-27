@@ -82,12 +82,63 @@ const cakeMesh = new THREE.Mesh(cakeGeometry, blueMaterial);
 cakeMesh.position.y = cakeHeight/2;
 scene.add(cakeMesh);
 
+/* ------------------------------
+   ICING DRIPS on the cake edge
+------------------------------ */
+const dripGroup = new THREE.Group();
+scene.add(dripGroup);
+
+const dripCount = 40;
+for (let i = 0; i < dripCount; i++) {
+
+    const angle = (i / dripCount) * Math.PI * 2;
+    const x = Math.cos(angle) * cakeRadius * 0.97;
+    const z = Math.sin(angle) * cakeRadius * 0.97;
+
+    const dripHeight = Math.random() * 0.7 + 0.4;
+
+    const geo = new THREE.CapsuleGeometry(0.25, dripHeight, 4, 8);
+    const mat = new THREE.MeshStandardMaterial({
+        color: 0x228BEE,
+        roughness: 0.6,
+        metalness: 0
+    });
+
+    const drip = new THREE.Mesh(geo, mat);
+    drip.position.set(x, cakeHeight - 0.2, z);
+    drip.rotation.x = Math.PI / 2; // orient downward
+    dripGroup.add(drip);
+}
+ 
+
 /* Gold piping (thin torus on top) */
-const pipingGeometry = new THREE.TorusGeometry(cakeRadius*0.95, 0.1, 16, 100);
-const pipingMesh = new THREE.Mesh(pipingGeometry, goldMaterial);
-pipingMesh.rotation.x = Math.PI/2;
-pipingMesh.position.y = cakeHeight;
-scene.add(pipingMesh);
+/* -------------------------
+   PIPED BORDER frosting
+-------------------------- */
+const borderGroup = new THREE.Group();
+scene.add(borderGroup);
+
+const borderCount = 32;
+
+for (let i = 0; i < borderCount; i++) {
+    const angle = (i / borderCount) * Math.PI * 2;
+    const x = Math.cos(angle) * cakeRadius * 0.95;
+    const z = Math.sin(angle) * cakeRadius * 0.95;
+
+    // swirled piping dollop
+    const geo = new THREE.SphereGeometry(0.35, 16, 16);
+    const mat = new THREE.MeshStandardMaterial({
+        color: 0xFFD700,
+        metalness: 0.4,
+        roughness: 0.3
+    });
+
+    const blob = new THREE.Mesh(geo, mat);
+    blob.position.set(x, cakeHeight + 0.1, z);
+
+    borderGroup.add(blob);
+}
+
 
 /* Floating Text */
 const fontLoader = new FontLoader();
@@ -177,6 +228,7 @@ for (let i = 0; i < 3; i++) {
         cakeHeight + 0.1,   // slightly above frosting
         Math.sin(angle) * radius
     );
+
 
     // tilt slightly toward the viewer for cuteness
     group.rotation.y = -angle;
