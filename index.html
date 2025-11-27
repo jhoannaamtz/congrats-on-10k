@@ -82,51 +82,14 @@ const blueRingHeight = 1;
 const goldTopHeight = 1.5;
 
 /*tow*/
-const towerGeometry = new THREE.CylinderGeometry(3.5, 3.5, towerHeight, 32);
+const towerGeometry = new THREE.CylinderGeometry(3.5, 3.5, towerHeight, 25);
 const towerMesh = new THREE.Mesh(towerGeometry, stoneMaterial);
 towerMesh.position.y = towerHeight / 2;
 scene.add(towerMesh);
 
-/*crown_blue*/
-const blueRingGeometry = new THREE.CylinderGeometry(4, 4, blueRingHeight, 32);
-const blueRingMesh = new THREE.Mesh(blueRingGeometry, blueMaterial);
-blueRingMesh.position.y = towerHeight + blueRingHeight / 2;
-scene.add(blueRingMesh);
-
-/*crown_gold*/
-const goldTopGeometry = new THREE.CylinderGeometry(3.8, 3.8, goldTopHeight, 32);
-const goldTopMesh = new THREE.Mesh(goldTopGeometry, goldMaterial);
-goldTopMesh.position.y = towerHeight + blueRingHeight + goldTopHeight / 2;
-scene.add(goldTopMesh);
-
-/*crown_gaps*/
-const teethRadius = 3.8;
-const numTeeth = 8;
-const toothGeometry = new THREE.BoxGeometry(1.5, 1.5, 0.4);
-
-for (let i = 0; i < numTeeth; i++) {
-    const angle = (i / numTeeth) * Math.PI * 2;
-    const toothMesh = new THREE.Mesh(toothGeometry, goldMaterial);
-    toothMesh.position.x = Math.cos(angle) * teethRadius;
-    toothMesh.position.z = Math.sin(angle) * teethRadius;
-    toothMesh.position.y = 7.75;
-    toothMesh.rotation.y = -angle;
-    scene.add(toothMesh);
-}
 
 
-const studGeometry = new THREE.OctahedronGeometry(0.3);
-const studCount = 4;
-const studRadius = 4.05;
 
-for (let i = 0; i < studCount; i++) {
-    const angle = (i / studCount) * Math.PI * 2;
-    const studMesh = new THREE.Mesh(studGeometry, goldMaterial);
-    studMesh.position.x = Math.cos(angle) * studRadius;
-    studMesh.position.z = Math.sin(angle) * studRadius;
-    studMesh.position.y = 6.5;
-    scene.add(studMesh);
-}
 
 /*TEXXTTTT!!*/
 const fontLoader = new FontLoader();
