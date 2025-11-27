@@ -95,7 +95,8 @@ for (let i = 0; i < borderCount; i++) {
     const z = Math.sin(angle) * cakeRadius * 0.95;
 
     // swirled piping dollop
-    const geo = new THREE.SphereGeometry(0.35, 16, 16);
+    const geo = new THREE.TorusKnotGeometry(0.22, 0.08, 64, 12, 2, 3);
+;
     const mat = new THREE.MeshStandardMaterial({
         color: 0xFFD700,
         metalness: 0.4,
@@ -108,6 +109,29 @@ for (let i = 0; i < borderCount; i++) {
     borderGroup.add(blob);
 }
 
+/* Bottom Frosting Border */
+const bottomBorder = new THREE.Group();
+scene.add(bottomBorder);
+
+const bottomCount = 32;
+const bottomRadius = cakeRadius * 0.95;
+
+for (let i = 0; i < bottomCount; i++) {
+    const angle = (i / bottomCount) * Math.PI * 2;
+    const x = Math.cos(angle) * bottomRadius;
+    const z = Math.sin(angle) * bottomRadius;
+
+    const dollop = new THREE.Mesh(
+        new THREE.TorusKnotGeometry(0.22, 0.08, 64, 12, 2, 3);
+,
+        goldMaterial // or blueMaterial
+    );
+
+    dollop.scale.set(1, 0.65, 1);
+    dollop.position.set(x, 0.15, z);
+
+    bottomBorder.add(dollop);
+} 
 
 /* Floating Text */
 const fontLoader = new FontLoader();
