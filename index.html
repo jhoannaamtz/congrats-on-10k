@@ -60,18 +60,28 @@ const listener = new THREE.AudioListener();
 camera.add(listener);
 
 const sound = new THREE.Audio(listener);
-
 const audioLoader = new THREE.AudioLoader();
-audioLoader.load(
-    "https://cdn.pixabay.com/download/audio/2022/03/15/audio_c3cba6d1e8.mp3?filename=game-music-loop-5-113701.mp3", 
-    buffer => {
-        sound.setBuffer(buffer);
-        sound.setLoop(true);
-        sound.setVolume(0.45);
-        sound.play();
-    }
-);
 
+// Load your MP3
+audioLoader.load('Celebration.mp3', buffer => {
+    sound.setBuffer(buffer);
+    sound.setLoop(true);
+    sound.setVolume(0.45);
+});
+
+// Autoplay 
+function startAudio() {
+    if (!sound.isPlaying) sound.play();
+    window.removeEventListener('click', startAudio);
+}
+window.addEventListener('click', startAudio);
+
+// Optional: Mute/Unmute toggle
+window.addEventListener('keydown', e => {
+    if (e.key === 'm') {
+        sound.setVolume(sound.getVolume() > 0 ? 0 : 0.45);
+    }
+});
     
 /* Renderer */
 const renderer = new THREE.WebGLRenderer({ antialias: true });
