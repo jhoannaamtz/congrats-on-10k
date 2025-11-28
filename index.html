@@ -55,6 +55,21 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0, 8, 15);
 camera.lookAt(0, 4, 0);
 
+<button id="playBtn" style="
+    position: fixed;
+    top: 10px;       /* distance from top */
+    left: 10px;      /* distance from left */
+    z-index: 100;
+    padding: 8px 16px;
+    font-size: 14px;
+    background-color: #ffd700;
+    color: #222;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+">Play Music</button>
+
+    
 /* AUDIO!! */
 const listener = new THREE.AudioListener();
 camera.add(listener);
@@ -62,21 +77,25 @@ camera.add(listener);
 const sound = new THREE.Audio(listener);
 const audioLoader = new THREE.AudioLoader();
 
-// Load your MP3
 audioLoader.load('Celebration.mp3', buffer => {
     sound.setBuffer(buffer);
     sound.setLoop(true);
     sound.setVolume(0.45);
 });
 
-// Autoplay 
 function startAudio() {
     if (!sound.isPlaying) sound.play();
+    playBtn.style.display = 'none'; // hide button once playing
     window.removeEventListener('click', startAudio);
+    window.removeEventListener('touchstart', startAudio);
 }
-window.addEventListener('click', startAudio);
 
-// Optional: Mute/Unmute toggle
+const playBtn = document.getElementById('playBtn');
+playBtn.addEventListener('click', startAudio);
+window.addEventListener('click', startAudio);
+window.addEventListener('touchstart', startAudio);
+
+// Mute/unmute
 window.addEventListener('keydown', e => {
     if (e.key === 'm') {
         sound.setVolume(sound.getVolume() > 0 ? 0 : 0.45);
