@@ -54,6 +54,64 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
+function fixWinding(font) {
+    const glyphs = font.data.glyphs;
+    if (!glyphs) return;
+
+    for (const key in glyphs) {
+        const g = glyphs[key];
+        if (!g.o) continue;
+
+        const tokens = g.o.trim().split(/\s+/);
+        let subpaths = [];
+        let current = [];
+
+        // Split into individual paths
+        tokens.forEach(cmd => {
+            current.push(cmd);
+            if (cmd === "z") {
+                subpaths.push([...current]);
+                current = [];
+            }
+        });
+
+        // Convert each path to numeric coordinate arrays for area calc
+        function pathToPoints(path) {
+            const pts = [];
+            for (let i = 0; i < path.length; i++) {
+                const cmd = path[i];
+                if (cmd === "m" || cmd === "l" || cmd === "b") {
+                    const x = parseFloat(path[i+1]);
+                    const y = parseFloat(path[i+2]);
+                    pts.push([x, y]);
+                }
+            }
+            return pts;
+        }
+
+        // Calculate signed area
+        function signedArea(pts) {
+            let area = 0;
+            for (let i = 0; i < pts.length; i++) {
+                const [x1, y1] = pts[i];
+                const [x2, y2] = pts[(i + 1) % pts.length];
+                area += (x1 * y2 - x2 * y1);
+            }
+            return area / 2;
+        }
+
+        const fixedPaths = subpaths.map(path => {
+            const pts = pathToPoints(path);
+            if (pts.length < 3) return path;
+            const area = signedArea(pts);
+            if (area < 0) return path.reverse();
+            return path;
+        });
+
+        g.o = fixedPaths.map(p => p.join(" ")).join(" ");
+    }
+}
+    
 /* Scene */
 const scene = new THREE.Scene();
 
